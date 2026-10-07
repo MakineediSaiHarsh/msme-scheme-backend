@@ -1,0 +1,1543 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SchemeSetu — MSME Scheme Navigator</title>
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,600&display=swap");
+
+    :root {
+      --paper: #f7f6ef;
+      --surface: #fffefa;
+      --ink: #17322d;
+      --navy: #17283e;
+      --muted: #64716d;
+      --line: #dce2dc;
+      --green: #08695d;
+      --green-dark: #075247;
+      --mint: #dceee7;
+      --mint-light: #edf7f2;
+      --saffron: #e99a25;
+      --danger: #9d3f35;
+      --shadow: 0 24px 70px rgba(24, 55, 48, .1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "DM Sans", sans-serif;
+      background:
+        radial-gradient(
+          circle at 10% 5%,
+          #f3dfba 0,
+          transparent 25rem
+        ),
+        radial-gradient(
+          circle at 90% 22%,
+          #d8ebe4 0,
+          transparent 30rem
+        ),
+        var(--paper);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button,
+    select {
+      cursor: pointer;
+    }
+
+    .shell {
+      width: min(1160px, calc(100% - 36px));
+      margin: auto;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: inherit;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: white;
+      background: var(--green);
+      box-shadow: 0 8px 20px rgba(8, 105, 93, .22);
+    }
+
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-size: .68rem;
+      font-weight: 500;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .86rem;
+      font-weight: 600;
+    }
+
+    nav .nav-button {
+      padding: 10px 15px;
+      color: var(--green);
+      border: 1px solid var(--green);
+      border-radius: 999px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 65px;
+      align-items: center;
+      padding: 65px 0 85px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border: 1px solid #c8ddd5;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .55);
+      color: var(--green-dark);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--saffron);
+    }
+
+    h1 {
+      margin: 22px 0 20px;
+      color: var(--navy);
+      font: 600 clamp(3.2rem, 6vw, 5.6rem)/.94
+        "Newsreader", serif;
+      letter-spacing: -.05em;
+    }
+
+    h1 em {
+      color: var(--green);
+      font-style: normal;
+    }
+
+    .hero-copy > p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .trust {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #53635f;
+      font-size: .8rem;
+      font-weight: 600;
+    }
+
+    .check {
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--green);
+      background: var(--mint);
+    }
+
+    .form-card {
+      position: relative;
+      padding: 27px;
+      border: 1px solid rgba(8, 105, 93, .15);
+      border-radius: 28px;
+      background: rgba(255, 254, 250, .94);
+      box-shadow: var(--shadow);
+    }
+
+    .form-card::before {
+      content: "";
+      position: absolute;
+      inset: 12px -12px -12px 12px;
+      z-index: -1;
+      border-radius: 28px;
+      background: var(--mint);
+    }
+
+    .form-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .form-head h2 {
+      margin: 0 0 5px;
+      font-size: 1.2rem;
+    }
+
+    .form-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .8rem;
+    }
+
+    .badge {
+      height: fit-content;
+      padding: 7px 10px;
+      border-radius: 9px;
+      color: var(--green);
+      background: var(--mint-light);
+      font-size: .68rem;
+      font-weight: 700;
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: #475a55;
+      font-size: .73rem;
+      font-weight: 700;
+    }
+
+    select,
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      outline: none;
+      color: var(--ink);
+      background: white;
+    }
+
+    select,
+    input {
+      height: 46px;
+      padding: 0 13px;
+    }
+
+    textarea {
+      min-height: 115px;
+      padding: 13px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    select:focus,
+    input:focus,
+    textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 4px rgba(8, 105, 93, .1);
+    }
+
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 9px;
+    }
+
+    .suggestion {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: transparent;
+      font-size: .68rem;
+    }
+
+    .suggestion:hover {
+      color: var(--green);
+      border-color: #9bbdb3;
+      background: var(--mint-light);
+    }
+
+    .primary {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 19px;
+      border: 0;
+      border-radius: 14px;
+      color: white;
+      background: var(--green);
+      font-weight: 700;
+      box-shadow: 0 12px 25px rgba(8, 105, 93, .2);
+    }
+
+    .primary:hover {
+      background: var(--green-dark);
+    }
+
+    .primary:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .how {
+      padding: 70px 0;
+      border-top: 1px solid rgba(23, 50, 45, .1);
+    }
+
+    .section-heading {
+      max-width: 600px;
+      margin-bottom: 32px;
+    }
+
+    .kicker {
+      color: var(--green);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      margin: 10px 0;
+      color: var(--navy);
+      font: 600 clamp(2.2rem, 4vw, 3.2rem)/1.04
+        "Newsreader", serif;
+      letter-spacing: -.035em;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .step {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, .5);
+    }
+
+    .step-number {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 22px;
+      border-radius: 11px;
+      color: var(--green);
+      background: var(--mint);
+      font-weight: 800;
+    }
+
+    .step h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .84rem;
+      line-height: 1.6;
+    }
+
+    .loading,
+    .error,
+    .results {
+      display: none;
+    }
+
+    .visible {
+      display: block;
+    }
+
+    .loading {
+      max-width: 700px;
+      margin: 20px auto 80px;
+      padding: 36px;
+      border-radius: 24px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .spinner {
+      width: 54px;
+      height: 54px;
+      margin: auto auto 18px;
+      border: 5px solid var(--mint);
+      border-top-color: var(--green);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading h2 {
+      margin: 0 0 6px;
+    }
+
+    .loading p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .error {
+      max-width: 700px;
+      margin: 20px auto 70px;
+      padding: 18px;
+      border: 1px solid #eccbc5;
+      border-radius: 15px;
+      color: var(--danger);
+      background: #fff4f1;
+    }
+
+    .results {
+      padding: 20px 0 90px;
+    }
+
+    .results-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .results-header h2 {
+      margin: 0 0 5px;
+      color: var(--navy);
+      font: 600 2.6rem/1 "Newsreader", serif;
+    }
+
+    .results-header p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .secondary {
+      padding: 10px 13px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: var(--ink);
+      background: var(--surface);
+      font-size: .76rem;
+      font-weight: 700;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1.4fr)
+        minmax(280px, .7fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .answer-card,
+    .sources-card {
+      border: 1px solid var(--line);
+      border-radius: 23px;
+      background: var(--surface);
+      box-shadow: 0 15px 45px rgba(24, 55, 48, .06);
+    }
+
+    .answer-card {
+      padding: clamp(25px, 4vw, 42px);
+    }
+
+    .answer-label {
+      margin-bottom: 20px;
+      color: var(--green);
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    /* Formatted Gemini answer */
+
+    #answer {
+      max-width: 74ch;
+      color: #29413c;
+      font-size: 1rem;
+      line-height: 1.75;
+      white-space: normal;
+    }
+
+    #answer > p:first-child {
+      color: var(--ink);
+      font-size: 1.08rem;
+      line-height: 1.7;
+    }
+
+    #answer h2,
+    #answer h3 {
+      color: var(--navy);
+      line-height: 1.3;
+      letter-spacing: -.018em;
+    }
+
+    #answer h2 {
+      margin: 34px 0 13px;
+      font: 600 1.55rem/1.2 "Newsreader", serif;
+    }
+
+    #answer h3 {
+      margin: 30px 0 16px;
+      padding: 15px 18px;
+      border-left: 4px solid var(--saffron);
+      border-radius: 0 13px 13px 0;
+      background: var(--mint-light);
+      font-size: 1.1rem;
+    }
+
+    #answer p {
+      margin: 0 0 16px;
+    }
+
+    #answer strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    #answer em {
+      color: var(--muted);
+    }
+
+    #answer ul,
+    #answer ol {
+      margin: 10px 0 22px;
+      padding: 0;
+      list-style: none;
+    }
+
+    #answer li {
+      position: relative;
+      margin: 9px 0;
+      padding: 11px 14px 11px 38px;
+      border: 1px solid #e1ebe6;
+      border-radius: 11px;
+      background: #fbfcfa;
+    }
+
+    #answer li p {
+      margin: 0;
+    }
+
+    #answer ul li::before {
+      content: "✓";
+      position: absolute;
+      left: 14px;
+      top: 11px;
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    #answer ol {
+      counter-reset: answer-list;
+    }
+
+    #answer ol li {
+      counter-increment: answer-list;
+    }
+
+    #answer ol li::before {
+      content: counter(answer-list);
+      position: absolute;
+      left: 11px;
+      top: 11px;
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      color: white;
+      background: var(--green);
+      font-size: .68rem;
+      font-weight: 800;
+    }
+
+    #answer hr {
+      height: 1px;
+      margin: 28px 0;
+      border: 0;
+      background:
+        linear-gradient(90deg, var(--line), transparent);
+    }
+
+    #answer a {
+      color: var(--green);
+      font-weight: 700;
+      overflow-wrap: anywhere;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    #answer blockquote {
+      margin: 20px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--green);
+      border-radius: 0 12px 12px 0;
+      color: #455b55;
+      background: #f5f9f7;
+    }
+
+    .citation {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 26px;
+      height: 22px;
+      margin: 0 2px;
+      padding: 0 6px;
+      border-radius: 7px;
+      color: var(--green-dark);
+      background: var(--mint);
+      font-size: .7rem;
+      font-weight: 800;
+      vertical-align: 2px;
+    }
+
+    .sources-card {
+      overflow: hidden;
+    }
+
+    .sources-title {
+      padding: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .sources-title h3 {
+      margin: 0 0 4px;
+    }
+
+    .sources-title p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .74rem;
+    }
+
+    .source-list {
+      padding: 8px;
+    }
+
+    .source {
+      display: block;
+      padding: 14px;
+      border-radius: 13px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .source + .source {
+      border-top: 1px solid #edf0ed;
+    }
+
+    .source:hover {
+      background: var(--mint-light);
+    }
+
+    .source-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 7px;
+      color: var(--green);
+      font-size: .68rem;
+      font-weight: 800;
+    }
+
+    .source h4 {
+      margin: 0 0 5px;
+      font-size: .83rem;
+      line-height: 1.4;
+    }
+
+    .source p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .7rem;
+    }
+
+    .disclaimer {
+      margin-top: 18px;
+      padding: 15px;
+      border-radius: 13px;
+      color: #6c6a5e;
+      background: #f3f0e3;
+      font-size: .72rem;
+      line-height: 1.55;
+    }
+
+    footer {
+      padding: 26px 0 36px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .72rem;
+    }
+
+    @media (min-width: 901px) {
+      .sources-card {
+        position: sticky;
+        top: 20px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .hero-copy {
+        text-align: center;
+      }
+
+      .trust-row {
+        justify-content: center;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      nav a:not(.nav-button) {
+        display: none;
+      }
+
+      h1 {
+        font-size: 3.5rem;
+      }
+
+      .fields,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+
+      .form-card::before {
+        display: none;
+      }
+
+      .results-header {
+        align-items: start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="shell">
+    <a class="brand" href="/">
+      <span class="logo">S</span>
+
+      <span>
+        SchemeSetu
+        <small>MSME &amp; Startup Navigator</small>
+      </span>
+    </a>
+
+    <nav>
+      <a href="#how">How it works</a>
+      <a class="nav-button" href="#navigator">
+        Check eligibility
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div class="hero-copy">
+        <span class="eyebrow">
+          <span class="dot"></span>
+          Grounded in official documents
+        </span>
+
+        <h1>
+          Government support, without the
+          <em>paperwork maze.</em>
+        </h1>
+
+        <p>
+          Describe your business once. SchemeSetu searches a
+          curated library of government documents and converts
+          the fine print into practical, cited guidance.
+        </p>
+
+        <div class="trust-row">
+          <span class="trust">
+            <span class="check">✓</span>
+            Source-linked answers
+          </span>
+
+          <span class="trust">
+            <span class="check">✓</span>
+            Built for Indian businesses
+          </span>
+
+          <span class="trust">
+            <span class="check">✓</span>
+            Plain-language guidance
+          </span>
+        </div>
+      </div>
+
+      <form class="form-card" id="navigator">
+        <div class="form-head">
+          <div>
+            <h2>Tell us about your business</h2>
+            <p>A few details improve your matches.</p>
+          </div>
+
+          <span class="badge">30 seconds</span>
+        </div>
+
+        <div class="fields">
+          <div class="field">
+            <label for="businessType">Business type</label>
+
+            <select id="businessType">
+              <option value="startup">Startup</option>
+              <option value="MSME">MSME</option>
+              <option value="startup or MSME" selected>
+                Not sure / both
+              </option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="stage">Business stage</label>
+
+            <select id="stage">
+              <option value="idea or pre-revenue stage">
+                Idea / pre-revenue
+              </option>
+
+              <option value="less than one year old">
+                Under 1 year
+              </option>
+
+              <option value="one to three years old" selected>
+                1–3 years
+              </option>
+
+              <option value="more than three years old">
+                3+ years
+              </option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="sector">Sector</label>
+
+            <select id="sector">
+              <option value="technology">
+                Technology
+              </option>
+
+              <option value="manufacturing" selected>
+                Manufacturing
+              </option>
+
+              <option value="food processing or agriculture">
+                Food &amp; agriculture
+              </option>
+
+              <option value="professional services">
+                Services
+              </option>
+
+              <option value="retail or ecommerce">
+                Retail &amp; ecommerce
+              </option>
+
+              <option value="another sector">
+                Other
+              </option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="state">State or location</label>
+
+            <input
+              id="state"
+              placeholder="e.g. Odisha or India-wide"
+            >
+          </div>
+
+          <div class="field full">
+            <label for="question">
+              What kind of support are you looking for?
+            </label>
+
+            <textarea
+              id="question"
+              minlength="3"
+              maxlength="700"
+              required
+              placeholder="Example: I need collateral-free funding to purchase machinery and hire my first team."
+            ></textarea>
+
+            <div class="suggestions">
+              <button type="button" class="suggestion">
+                Collateral-free loan
+              </button>
+
+              <button type="button" class="suggestion">
+                Women entrepreneur support
+              </button>
+
+              <button type="button" class="suggestion">
+                Manufacturing subsidy
+              </button>
+
+              <button type="button" class="suggestion">
+                Market access support
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button
+          class="primary"
+          id="submitButton"
+          type="submit"
+        >
+          Find matching schemes →
+        </button>
+      </form>
+    </section>
+
+    <section class="how shell" id="how">
+      <div class="section-heading">
+        <span class="kicker">How it works</span>
+
+        <h2>
+          From business context to evidence-backed guidance.
+        </h2>
+
+        <p>
+          The navigator combines semantic document search with
+          Gemini while keeping the underlying sources visible.
+        </p>
+      </div>
+
+      <div class="steps">
+        <article class="step">
+          <span class="step-number">01</span>
+          <h3>Build your profile</h3>
+
+          <p>
+            Tell us your stage, sector, location and funding
+            requirement.
+          </p>
+        </article>
+
+        <article class="step">
+          <span class="step-number">02</span>
+          <h3>Search scheme documents</h3>
+
+          <p>
+            Relevant passages are retrieved using semantic
+            search.
+          </p>
+        </article>
+
+        <article class="step">
+          <span class="step-number">03</span>
+          <h3>Review the sources</h3>
+
+          <p>
+            Receive practical guidance with document and page
+            references.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="loading shell" id="loading">
+      <div class="spinner"></div>
+
+      <h2>Finding your strongest matches</h2>
+
+      <p id="loadingMessage">
+        Understanding your business profile…
+      </p>
+    </section>
+
+    <section class="error shell" id="error"></section>
+
+    <section class="results shell" id="results">
+      <div class="results-header">
+        <div>
+          <h2>Your scheme brief</h2>
+
+          <p id="resultMeta">
+            Grounded in official-source documents
+          </p>
+        </div>
+
+        <div class="actions">
+          <button class="secondary" id="copyButton">
+            Copy answer
+          </button>
+
+          <button class="secondary" id="newSearchButton">
+            New search
+          </button>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <article class="answer-card">
+          <div class="answer-label">
+            ✦ Personalised guidance
+          </div>
+
+          <div id="answer"></div>
+
+          <div class="disclaimer">
+            This is an independent educational prototype, not an
+            official government service. Confirm final eligibility
+            and application details on the linked official source
+            before acting.
+          </div>
+        </article>
+
+        <aside class="sources-card">
+          <div class="sources-title">
+            <h3>Sources used</h3>
+
+            <p>
+              Open the documents behind this answer
+            </p>
+          </div>
+
+          <div class="source-list" id="sources"></div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">
+      SchemeSetu · Answers generated from a curated
+      scheme-document library.
+    </div>
+  </footer>
+
+  <!-- Markdown renderer and HTML sanitizer -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
+  ></script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/dompurify@3.4.16/dist/purify.min.js"
+  ></script>
+
+  <script>
+    const form =
+      document.querySelector("#navigator");
+
+    const loading =
+      document.querySelector("#loading");
+
+    const loadingMessage =
+      document.querySelector("#loadingMessage");
+
+    const errorPanel =
+      document.querySelector("#error");
+
+    const results =
+      document.querySelector("#results");
+
+    const answerElement =
+      document.querySelector("#answer");
+
+    const sourcesElement =
+      document.querySelector("#sources");
+
+    const submitButton =
+      document.querySelector("#submitButton");
+
+    let currentAnswer = "";
+
+    const suggestions = {
+      "Collateral-free loan":
+        "I need collateral-free financing or a credit guarantee.",
+
+      "Women entrepreneur support":
+        "What special support is available for a women-led business?",
+
+      "Manufacturing subsidy":
+        "I need help purchasing machinery and expanding manufacturing.",
+
+      "Market access support":
+        "I need support reaching government buyers and new markets."
+    };
+
+    document
+      .querySelectorAll(".suggestion")
+      .forEach(button => {
+        button.addEventListener("click", () => {
+          document.querySelector("#question").value =
+            suggestions[button.textContent.trim()];
+        });
+      });
+
+    function escapeHtml(value = "") {
+      return String(value).replace(
+        /[&<>"']/g,
+        character => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[character]
+      );
+    }
+
+    function safeUrl(value) {
+      try {
+        const url = new URL(value);
+
+        return ["http:", "https:"].includes(url.protocol)
+          ? url.href
+          : "#";
+      } catch {
+        return "#";
+      }
+    }
+
+    /*
+     * Converts Gemini's Markdown answer into formatted HTML.
+     * Citations such as [1] become styled badges.
+     */
+    function renderMarkdown(markdown) {
+      const withCitations =
+        String(markdown || "").replace(
+          /\[(\d+)\](?!\()/g,
+          '<span class="citation">[$1]</span>'
+        );
+
+      const rendered = marked.parse(
+        withCitations,
+        {
+          gfm: true,
+          breaks: true
+        }
+      );
+
+      return DOMPurify.sanitize(rendered);
+    }
+
+    /*
+     * Groups passages from the same document together while
+     * preserving their citation numbers and page numbers.
+     */
+    function displaySources(sources) {
+      const grouped = new Map();
+
+      (sources || []).forEach(source => {
+        const key =
+          `${source.sourceUrl || ""}|` +
+          `${source.documentTitle || ""}`;
+
+        if (!grouped.has(key)) {
+          grouped.set(key, {
+            ...source,
+            citations: [],
+            pages: [],
+            similarity: Number(
+              source.similarity || 0
+            )
+          });
+        }
+
+        const item = grouped.get(key);
+
+        if (
+          source.citation !== undefined &&
+          source.citation !== null &&
+          !item.citations.includes(source.citation)
+        ) {
+          item.citations.push(source.citation);
+        }
+
+        if (
+          source.pageNumber !== undefined &&
+          source.pageNumber !== null &&
+          !item.pages.includes(source.pageNumber)
+        ) {
+          item.pages.push(source.pageNumber);
+        }
+
+        item.similarity = Math.max(
+          item.similarity,
+          Number(source.similarity || 0)
+        );
+      });
+
+      if (!grouped.size) {
+        sourcesElement.innerHTML = `
+          <div style="padding:20px;color:#64716d">
+            No sources returned.
+          </div>
+        `;
+
+        return;
+      }
+
+      sourcesElement.innerHTML =
+        [...grouped.values()]
+          .map(source => {
+            const citations =
+              source.citations
+                .sort(
+                  (a, b) =>
+                    Number(a) - Number(b)
+                )
+                .map(number => `[${number}]`)
+                .join(" ");
+
+            const sortedPages =
+              source.pages.sort(
+                (a, b) =>
+                  String(a).localeCompare(
+                    String(b),
+                    undefined,
+                    { numeric: true }
+                  )
+              );
+
+            const pages =
+              sortedPages.length
+                ? (
+                    ` · ${
+                      sortedPages.length === 1
+                        ? "Page"
+                        : "Pages"
+                    } ${sortedPages.join(", ")}`
+                  )
+                : "";
+
+            const similarity =
+              source.similarity
+                ? (
+                    `${Math.round(
+                      source.similarity * 100
+                    )}% match`
+                  )
+                : "";
+
+            return `
+              <a
+                class="source"
+                href="${safeUrl(source.sourceUrl)}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div class="source-top">
+                  <span>
+                    ${escapeHtml(citations)}
+                  </span>
+
+                  <span>
+                    ${escapeHtml(similarity)}
+                  </span>
+                </div>
+
+                <h4>
+                  ${escapeHtml(
+                    source.schemeName ||
+                    source.documentTitle ||
+                    "Government scheme"
+                  )}
+                </h4>
+
+                <p>
+                  ${escapeHtml(
+                    source.documentTitle ||
+                    "Official document"
+                  )}
+                  ${escapeHtml(pages)} ↗
+                </p>
+              </a>
+            `;
+          })
+          .join("");
+    }
+
+    form.addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        const question =
+          document
+            .querySelector("#question")
+            .value
+            .trim();
+
+        if (question.length < 3) {
+          document
+            .querySelector("#question")
+            .focus();
+
+          return;
+        }
+
+        const state =
+          document
+            .querySelector("#state")
+            .value
+            .trim() || "India";
+
+        const completeQuestion = `
+          I have a ${
+            document.querySelector("#stage").value
+          }
+          ${
+            document.querySelector("#businessType").value
+          }
+          in the ${
+            document.querySelector("#sector").value
+          } sector,
+          based in ${state}. ${question}
+        `
+          .replace(/\s+/g, " ")
+          .trim();
+
+        results.classList.remove("visible");
+        errorPanel.classList.remove("visible");
+        loading.classList.add("visible");
+
+        submitButton.disabled = true;
+
+        loading.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+        const messages = [
+          "Understanding your business profile…",
+          "Searching relevant scheme documents…",
+          "Preparing a source-backed answer…"
+        ];
+
+        let messageIndex = 0;
+
+        const loadingTimer =
+          setInterval(() => {
+            messageIndex = Math.min(
+              messageIndex + 1,
+              messages.length - 1
+            );
+
+            loadingMessage.textContent =
+              messages[messageIndex];
+          }, 2200);
+
+        try {
+          const response = await fetch(
+            "/api/ask",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body: JSON.stringify({
+                question: completeQuestion
+              })
+            }
+          );
+
+          const data =
+            await response.json();
+
+          if (!response.ok) {
+            throw new Error(
+              data.detail ||
+              data.error ||
+              "The scheme search could not be completed."
+            );
+          }
+
+          currentAnswer =
+            data.answer || "";
+
+          /*
+           * Important change:
+           * Render Markdown instead of displaying raw text.
+           */
+          answerElement.innerHTML =
+            renderMarkdown(currentAnswer);
+
+          answerElement
+            .querySelectorAll("a")
+            .forEach(link => {
+              link.target = "_blank";
+              link.rel =
+                "noopener noreferrer";
+            });
+
+          displaySources(
+            data.sources || []
+          );
+
+          document
+            .querySelector("#resultMeta")
+            .textContent =
+              data.sources?.length
+                ? (
+                    `Grounded in ${
+                      data.sources.length
+                    } retrieved passages`
+                  )
+                : (
+                    "No strong document match was found"
+                  );
+
+          results.classList.add("visible");
+
+          setTimeout(() => {
+            results.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+          }, 100);
+        } catch (error) {
+          errorPanel.textContent =
+            `${error.message} Please try again.`;
+
+          errorPanel.classList.add("visible");
+        } finally {
+          clearInterval(loadingTimer);
+
+          loading.classList.remove("visible");
+          submitButton.disabled = false;
+        }
+      }
+    );
+
+    document
+      .querySelector("#copyButton")
+      .addEventListener(
+        "click",
+        async event => {
+          await navigator.clipboard.writeText(
+            currentAnswer
+          );
+
+          event.currentTarget.textContent =
+            "Copied";
+
+          setTimeout(() => {
+            event.currentTarget.textContent =
+              "Copy answer";
+          }, 1400);
+        }
+      );
+
+    document
+      .querySelector("#newSearchButton")
+      .addEventListener(
+        "click",
+        () => {
+          results.classList.remove("visible");
+
+          form.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+        }
+      );
+  </script>
+</body>
+</html>

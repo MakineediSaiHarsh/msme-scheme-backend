@@ -5,9 +5,12 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from pathlib import Path
+from fastapi.responses import FileResponse
 
 
 load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent
 
 app = FastAPI(
     title="MSME Scheme Navigator API",
@@ -42,13 +45,9 @@ class AskRequest(BaseModel):
     question: str
 
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 async def home():
-    return {
-        "name": "MSME Scheme Navigator API",
-        "status": "running",
-        "documentation": "/docs",
-    }
+    return FileResponse(BASE_DIR / "index.html")
 
 
 @app.get("/api/health")
